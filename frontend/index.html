@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>CareQueue | Hospital Appointments</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="logo">
+            <div class="logo-icon">✚</div>
+            <div>
+                <strong>CareQueue</strong>
+                <span>Hospital Services</span>
+            </div>
+        </div>
+
+        <div class="nav-links">
+            <a href="#home">Home</a>
+            <a href="#appointment">Appointments</a>
+            <a href="#services">Services</a>
+        </div>
+
+        <button class="nav-button" onclick="scrollToAppointment()">
+            Book Appointment
+        </button>
+    </nav>
+
+
+    <!-- Hero -->
+    <section class="hero" id="home">
+
+        <div class="hero-content">
+
+            <div class="badge">
+                ● Online Appointment System
+            </div>
+
+            <h1>
+                Better healthcare.<br>
+                <span>Less waiting.</span>
+            </h1>
+
+            <p>
+                Book your hospital appointment online and manage
+                your queue without unnecessary waiting.
+            </p>
+
+            <button class="primary-button" onclick="scrollToAppointment()">
+                Book an Appointment →
+            </button>
+
+            <div class="trust">
+                <div>
+                    <strong>24/7</strong>
+                    <span>Online Booking</span>
+                </div>
+
+                <div>
+                    <strong>4+</strong>
+                    <span>Departments</span>
+                </div>
+
+                <div>
+                    <strong>Fast</strong>
+                    <span>Queue Updates</span>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="hero-card">
+
+            <div class="hospital-icon">✚</div>
+
+            <h3>Welcome to CareQueue</h3>
+
+            <p>
+                Your simple and convenient way to
+                manage hospital appointments.
+            </p>
+
+            <div class="status">
+                <span class="status-dot"></span>
+                System Online
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- Services -->
+    <section class="services" id="services">
+
+        <div class="section-heading">
+            <span>OUR SERVICES</span>
+            <h2>Healthcare made simpler</h2>
+        </div>
+
+        <div class="service-grid">
+
+            <div class="service-card">
+                <div class="service-icon">📅</div>
+                <h3>Easy Appointments</h3>
+                <p>
+                    Book an appointment with your preferred
+                    department in just a few clicks.
+                </p>
+            </div>
+
+            <div class="service-card">
+                <div class="service-icon">⏱</div>
+                <h3>Queue Management</h3>
+                <p>
+                    Track your position in the queue and
+                    reduce unnecessary waiting.
+                </p>
+            </div>
+
+            <div class="service-card">
+                <div class="service-icon">🏥</div>
+                <h3>Multiple Departments</h3>
+                <p>
+                    Access different hospital departments
+                    from one convenient platform.
+                </p>
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- Appointment -->
+    <section class="appointment-section" id="appointment">
+
+        <div class="appointment-container">
+
+            <div class="appointment-info">
+
+                <span class="section-label">
+                    APPOINTMENT
+                </span>
+
+                <h2>Book your visit</h2>
+
+                <p>
+                    Fill in your details and we'll send your
+                    appointment request to the hospital system.
+                </p>
+
+                <div class="info-item">
+                    <span>✓</span>
+                    <p>Quick online booking</p>
+                </div>
+
+                <div class="info-item">
+                    <span>✓</span>
+                    <p>Multiple departments</p>
+                </div>
+
+                <div class="info-item">
+                    <span>✓</span>
+                    <p>Queue management</p>
+                </div>
+
+            </div>
+
+
+            <div class="appointment-card">
+
+                <form id="appointmentForm">
+
+                    <div class="form-title">
+                        <h3>Appointment Details</h3>
+                        <p>All fields are required</p>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="name">Patient Name</label>
+                        <input
+                            type="text"
+                            id="name"
+                            placeholder="Enter patient name"
+                            required
+                        >
+                    </div>
+
+                    <div class="form-group">
+                        <label for="phone">Phone Number</label>
+                        <input
+                            type="tel"
+                            id="phone"
+                            placeholder="Enter phone number"
+                            required
+                        >
+                    </div>
+
+                    <div class="form-group">
+                        <label for="department">Department</label>
+
+                        <select id="department" required>
+                            <option value="">Choose a department</option>
+                            <option value="Cardiology">Cardiology</option>
+                            <option value="General Medicine">
+                                General Medicine
+                            </option>
+                            <option value="Orthopedics">
+                                Orthopedics
+                            </option>
+                            <option value="Pediatrics">
+                                Pediatrics
+                            </option>
+                        </select>
+
+                    </div>
+
+                    <button
+                        type="submit"
+                        class="submit-button"
+                    >
+                        Confirm Appointment
+                    </button>
+
+                    <div id="message"></div>
+
+                </form>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- Footer -->
+    <footer>
+
+        <div class="footer-logo">
+            ✚ CareQueue
+        </div>
+
+        <p>
+            Hospital Queue & Appointment Management System
+        </p>
+
+    </footer>
+
+
+    <!-- Success Popup -->
+    <div id="successModal" class="modal">
+
+        <div class="modal-content">
+
+            <button
+                class="close-button"
+                onclick="closeModal()"
+            >
+                ×
+            </button>
+
+            <div class="success-icon">
+                ✓
+            </div>
+
+            <h2>Appointment Received!</h2>
+
+            <p>
+                Your appointment request has been successfully
+                sent to the hospital system.
+            </p>
+
+            <div class="appointment-summary">
+
+                <div>
+                    <span>Patient</span>
+                    <strong id="summaryName">-</strong>
+                </div>
+
+                <div>
+                    <span>Department</span>
+                    <strong id="summaryDepartment">-</strong>
+                </div>
+
+                <div>
+                    <span>Phone</span>
+                    <strong id="summaryPhone">-</strong>
+                </div>
+
+            </div>
+
+            <button
+                class="modal-button"
+                onclick="closeModal()"
+            >
+                Done
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <script src="script.js"></script>
+
+</body>
+</html>
