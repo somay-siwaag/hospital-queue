@@ -1,5 +1,6 @@
 from flask import Flask, request
 from flask_cors import CORS
+from db import get_db_connection
 
 app = Flask(__name__)
 
@@ -20,8 +21,29 @@ def create_appointment():
     phone = data.get("phone")
     department = data.get("department")
 
+    connection = get_db_connection()
+    cursor = connection.cursor()
+
+    cursor.execute(
+        """
+        INSERT INTO appointments
+        (patient_name, phone, department)
+        VALUES (%s, %s, %s)
+        RETURNING id
+        """,
+        (patient_name, phone, department)
+    )
+
+    appointment_id = cursor.fetchone()[0]
+
+    connection.commit()
+
+    cursor.close()
+    connection.close()
+
     return {
-        "message": "Appointment received",
+        "message": "Appointment created successfully",
+        "appointment_id": appointment_id,
         "patient_name": patient_name,
         "phone": phone,
         "department": department
