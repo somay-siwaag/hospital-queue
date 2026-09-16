@@ -242,7 +242,3 @@ Recommended improvements:
 -   Improve automated deployment
 -   Remove unused resources
 
-## 13. Repository
-
-Add your public repository URL here. Do not include private URLs,
-credentials, access tokens, or infrastructure secrets.
