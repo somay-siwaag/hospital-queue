@@ -9,8 +9,6 @@ reach the frontend tier, are forwarded through a private internal load
 balancer to the backend tier, and are stored in a managed PostgreSQL
 database.
 
-> **Security note:** This documentation excludes project IDs, IP
-> addresses, credentials, personal information, and patient records.
 
 ## Project Overview
 
