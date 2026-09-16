@@ -215,17 +215,8 @@ Recommended improvements:
 11. Configure backups and recovery testing.
 12. Avoid publishing sensitive infrastructure details.
 
-## 12. Interview Explanation
 
-"I built a 3-tier hospital appointment system on Google Cloud. The
-frontend is hosted on a Compute Engine Managed Instance Group behind an
-external load balancer. Nginx forwards API requests to an internal load
-balancer, which routes them to a Dockerized Flask backend running in
-another Managed Instance Group. The backend connects to Cloud SQL
-PostgreSQL, where appointment requests are stored. I also configured VPC
-networking, Cloud NAT, firewall rules, and health checks."
-
-## 13. Project Status
+## 12. Project Status
 
 ### Completed
 
@@ -251,7 +242,7 @@ networking, Cloud NAT, firewall rules, and health checks."
 -   Improve automated deployment
 -   Remove unused resources
 
-## 14. Repository
+## 13. Repository
 
 Add your public repository URL here. Do not include private URLs,
 credentials, access tokens, or infrastructure secrets.
