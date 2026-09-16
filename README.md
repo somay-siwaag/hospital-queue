@@ -123,20 +123,6 @@ Before production use:
 -   Use a production WSGI server such as Gunicorn.
 -   Configure database backups and recovery procedures.
 
-## Future Improvements
-
--   Hospital staff admin dashboard
--   Appointment listing and search
--   Queue number generation
--   Appointment status updates
--   Department-wise queue management
--   Staff authentication
--   Custom domain and HTTPS
--   Cloud Monitoring dashboards
--   Automated deployment
--   Database migrations
--   Backup and recovery testing
-
 ## Learning Outcomes
 
 This project demonstrates:
