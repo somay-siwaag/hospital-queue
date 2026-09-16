@@ -1,36 +1,35 @@
+
 const form = document.getElementById("appointmentForm");
 
-form.addEventListener("submit", async function(event) {
-
+form.addEventListener("submit", async function (event) {
     event.preventDefault();
 
     const patientName = document.getElementById("name").value.trim();
     const phone = document.getElementById("phone").value.trim();
     const department = document.getElementById("department").value;
 
+    const submitButton = form.querySelector(".submit-button");
+
     if (!patientName || !phone || !department) {
         alert("Please fill in all fields.");
         return;
     }
 
+    submitButton.disabled = true;
+    submitButton.innerHTML = "Submitting...";
+
     try {
-
-        const response = await fetch(
-            "/api/appointments",
-            {
-                method: "POST",
-
-                headers: {
-                    "Content-Type": "application/json"
-                },
-
-                body: JSON.stringify({
-                    patient_name: patientName,
-                    phone: phone,
-                    department: department
-                })
-            }
-        );
+        const response = await fetch("/api/appointments", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                patient_name: patientName,
+                phone: phone,
+                department: department
+            })
+        });
 
         if (!response.ok) {
             throw new Error("Server returned an error.");
@@ -38,63 +37,55 @@ form.addEventListener("submit", async function(event) {
 
         const data = await response.json();
 
-        console.log("Backend response:", data);
-
-        /*
-         * Put the returned information into
-         * our success popup.
-         */
-
         document.getElementById("summaryName").textContent =
-            data.patient_name;
+            data.patient_name || patientName;
 
         document.getElementById("summaryPhone").textContent =
-            data.phone;
+            data.phone || phone;
 
         document.getElementById("summaryDepartment").textContent =
-            data.department;
-
-        /*
-         * Show popup
-         */
+            data.department || department;
 
         document.getElementById("successModal")
             .classList.add("show");
 
-        /*
-         * Clear form
-         */
-
         form.reset();
 
-    }
-
-    catch (error) {
-
+    } catch (error) {
         console.error("Backend connection error:", error);
 
         alert(
             "The appointment could not be submitted. " +
-            "Please make sure the Flask backend is running."
+            "Please try again."
         );
-    }
 
+    } finally {
+        submitButton.disabled = false;
+        submitButton.innerHTML =
+            'Confirm appointment <span>→</span>';
+    }
 });
 
 
 function closeModal() {
-
     document.getElementById("successModal")
         .classList.remove("show");
-
 }
 
 
 function scrollToAppointment() {
-
     document.getElementById("appointment")
         .scrollIntoView({
             behavior: "smooth"
         });
-
 }
+
+
+// Close modal when clicking outside the popup
+window.addEventListener("click", function (event) {
+    const modal = document.getElementById("successModal");
+
+    if (event.target === modal) {
+        closeModal();
+    }
+});
