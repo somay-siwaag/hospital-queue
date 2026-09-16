@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -e
+
 # Update package information
 apt-get update -y
 
