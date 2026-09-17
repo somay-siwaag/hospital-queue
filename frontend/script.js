@@ -70,11 +70,23 @@ document.addEventListener("DOMContentLoaded", () => {
             }
 
             // Support different backend response field names
-            const queueNumber =
-                data.appointment_id ||
-                data.queue_number ||
-                data.id ||
-                "—";
+            const queueNumber = data.appointment_id;
+
+console.log("Queue Number:", queueNumber);
+
+const queueElement = document.getElementById("summaryQueue");
+const liveQueueElement = document.getElementById("liveQueueNumber");
+
+console.log("Summary element:", queueElement);
+console.log("Live queue element:", liveQueueElement);
+
+if (queueElement) {
+    queueElement.textContent = queueNumber;
+}
+
+if (liveQueueElement) {
+    liveQueueElement.textContent = queueNumber;
+}
 
             // Update confirmation details
             if (summaryPatient) {
