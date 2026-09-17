@@ -37,6 +37,18 @@ form.addEventListener("submit", async function (event) {
 
         const data = await response.json();
 
+        // Get the real appointment ID from the backend
+        const queueNumber = data.appointment_id;
+
+        // Display queue number in the success modal
+        document.getElementById("summaryQueue").textContent =
+            queueNumber || "—";
+
+        // Display queue number in the hero preview
+        document.getElementById("liveQueueNumber").textContent =
+            queueNumber || "—";
+
+        // Display patient details
         document.getElementById("summaryName").textContent =
             data.patient_name || patientName;
 
@@ -46,9 +58,11 @@ form.addEventListener("submit", async function (event) {
         document.getElementById("summaryDepartment").textContent =
             data.department || department;
 
+        // Show success modal
         document.getElementById("successModal")
             .classList.add("show");
 
+        // Reset form
         form.reset();
 
     } catch (error) {
@@ -61,6 +75,7 @@ form.addEventListener("submit", async function (event) {
 
     } finally {
         submitButton.disabled = false;
+
         submitButton.innerHTML =
             'Confirm appointment <span>→</span>';
     }
