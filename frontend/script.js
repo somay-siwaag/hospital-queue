@@ -1,11 +1,10 @@
+
 document.addEventListener("DOMContentLoaded", () => {
     const form = document.getElementById("appointmentForm");
 
-    const modal = document.getElementById("confirmationModal");
-    const closeModal = document.getElementById("closeModal");
-    const doneButton = document.getElementById("doneButton");
+    const modal = document.getElementById("successModal");
 
-    const summaryPatient = document.getElementById("summaryPatient");
+    const summaryName = document.getElementById("summaryName");
     const summaryDepartment = document.getElementById("summaryDepartment");
     const summaryPhone = document.getElementById("summaryPhone");
     const summaryQueue = document.getElementById("summaryQueue");
@@ -20,17 +19,17 @@ document.addEventListener("DOMContentLoaded", () => {
     form.addEventListener("submit", async (event) => {
         event.preventDefault();
 
-        const patientName =
-            document.getElementById("patientName")?.value.trim() ||
-            document.querySelector('[name="patient_name"]')?.value.trim();
+        const patientName = document
+            .getElementById("name")
+            .value.trim();
 
-        const phone =
-            document.getElementById("phone")?.value.trim() ||
-            document.querySelector('[name="phone"]')?.value.trim();
+        const phone = document
+            .getElementById("phone")
+            .value.trim();
 
-        const department =
-            document.getElementById("department")?.value ||
-            document.querySelector('[name="department"]')?.value;
+        const department = document
+            .getElementById("department")
+            .value;
 
         if (!patientName || !phone || !department) {
             alert("Please fill in all fields.");
@@ -69,28 +68,23 @@ document.addEventListener("DOMContentLoaded", () => {
                 );
             }
 
-            // Support different backend response field names
+            // Get appointment ID from backend
             const queueNumber = data.appointment_id;
 
-console.log("Queue Number:", queueNumber);
+            console.log("Queue Number:", queueNumber);
 
-const queueElement = document.getElementById("summaryQueue");
-const liveQueueElement = document.getElementById("liveQueueNumber");
+            // Update queue number
+            if (summaryQueue) {
+                summaryQueue.textContent = queueNumber;
+            }
 
-console.log("Summary element:", queueElement);
-console.log("Live queue element:", liveQueueElement);
+            if (liveQueueNumber) {
+                liveQueueNumber.textContent = queueNumber;
+            }
 
-if (queueElement) {
-    queueElement.textContent = queueNumber;
-}
-
-if (liveQueueElement) {
-    liveQueueElement.textContent = queueNumber;
-}
-
-            // Update confirmation details
-            if (summaryPatient) {
-                summaryPatient.textContent =
+            // Update patient details
+            if (summaryName) {
+                summaryName.textContent =
                     data.patient_name || patientName;
             }
 
@@ -104,15 +98,7 @@ if (liveQueueElement) {
                     data.phone || phone;
             }
 
-            if (summaryQueue) {
-                summaryQueue.textContent = queueNumber;
-            }
-
-            if (liveQueueNumber) {
-                liveQueueNumber.textContent = queueNumber;
-            }
-
-            // Display confirmation modal
+            // Display success modal
             if (modal) {
                 modal.style.display = "flex";
                 modal.classList.add("active");
@@ -127,32 +113,27 @@ if (liveQueueElement) {
         } finally {
             if (submitButton) {
                 submitButton.disabled = false;
-                submitButton.textContent = "Book Appointment";
+                submitButton.textContent = "Confirm appointment →";
             }
         }
     });
+});
 
-    // Close modal using close icon
-    if (closeModal) {
-        closeModal.addEventListener("click", () => {
-            modal.style.display = "none";
-            modal.classList.remove("active");
-        });
+// Close modal
+function closeModal() {
+    const modal = document.getElementById("successModal");
+
+    if (modal) {
+        modal.style.display = "none";
+        modal.classList.remove("active");
     }
+}
 
-    // Close modal using Done button
-    if (doneButton) {
-        doneButton.addEventListener("click", () => {
-            modal.style.display = "none";
-            modal.classList.remove("active");
-        });
+// Close modal when clicking outside
+window.addEventListener("click", (event) => {
+    const modal = document.getElementById("successModal");
+
+    if (event.target === modal) {
+        closeModal();
     }
-
-    // Close modal by clicking outside
-    window.addEventListener("click", (event) => {
-        if (event.target === modal) {
-            modal.style.display = "none";
-            modal.classList.remove("active");
-        }
-    });
 });
