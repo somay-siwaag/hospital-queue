@@ -1,106 +1,146 @@
+document.addEventListener("DOMContentLoaded", () => {
+    const form = document.getElementById("appointmentForm");
 
-const form = document.getElementById("appointmentForm");
+    const modal = document.getElementById("confirmationModal");
+    const closeModal = document.getElementById("closeModal");
+    const doneButton = document.getElementById("doneButton");
 
-form.addEventListener("submit", async function (event) {
-    event.preventDefault();
+    const summaryPatient = document.getElementById("summaryPatient");
+    const summaryDepartment = document.getElementById("summaryDepartment");
+    const summaryPhone = document.getElementById("summaryPhone");
+    const summaryQueue = document.getElementById("summaryQueue");
 
-    const patientName = document.getElementById("name").value.trim();
-    const phone = document.getElementById("phone").value.trim();
-    const department = document.getElementById("department").value;
+    const liveQueueNumber = document.getElementById("liveQueueNumber");
 
-    const submitButton = form.querySelector(".submit-button");
-
-    if (!patientName || !phone || !department) {
-        alert("Please fill in all fields.");
+    if (!form) {
+        console.error("Appointment form not found.");
         return;
     }
 
-    submitButton.disabled = true;
-    submitButton.innerHTML = "Submitting...";
+    form.addEventListener("submit", async (event) => {
+        event.preventDefault();
 
-    try {
-        const response = await fetch("/api/appointments", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-                patient_name: patientName,
-                phone: phone,
-                department: department
-            })
-        });
+        const patientName =
+            document.getElementById("patientName")?.value.trim() ||
+            document.querySelector('[name="patient_name"]')?.value.trim();
 
-        if (!response.ok) {
-            throw new Error("Server returned an error.");
+        const phone =
+            document.getElementById("phone")?.value.trim() ||
+            document.querySelector('[name="phone"]')?.value.trim();
+
+        const department =
+            document.getElementById("department")?.value ||
+            document.querySelector('[name="department"]')?.value;
+
+        if (!patientName || !phone || !department) {
+            alert("Please fill in all fields.");
+            return;
         }
 
-        const data = await response.json();
-
-        // Get the real appointment ID from the backend
-        const queueNumber = data.appointment_id;
-
-        // Display queue number in the success modal
-        document.getElementById("summaryQueue").textContent =
-            queueNumber || "—";
-
-        // Display queue number in the hero preview
-        document.getElementById("liveQueueNumber").textContent =
-            queueNumber || "—";
-
-        // Display patient details
-        document.getElementById("summaryName").textContent =
-            data.patient_name || patientName;
-
-        document.getElementById("summaryPhone").textContent =
-            data.phone || phone;
-
-        document.getElementById("summaryDepartment").textContent =
-            data.department || department;
-
-        // Show success modal
-        document.getElementById("successModal")
-            .classList.add("show");
-
-        // Reset form
-        form.reset();
-
-    } catch (error) {
-        console.error("Backend connection error:", error);
-
-        alert(
-            "The appointment could not be submitted. " +
-            "Please try again."
+        const submitButton = form.querySelector(
+            'button[type="submit"]'
         );
 
-    } finally {
-        submitButton.disabled = false;
+        if (submitButton) {
+            submitButton.disabled = true;
+            submitButton.textContent = "Submitting...";
+        }
 
-        submitButton.innerHTML =
-            'Confirm appointment <span>→</span>';
-    }
-});
+        try {
+            const response = await fetch("/api/appointments", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    patient_name: patientName,
+                    phone: phone,
+                    department: department
+                })
+            });
 
+            const data = await response.json();
 
-function closeModal() {
-    document.getElementById("successModal")
-        .classList.remove("show");
-}
+            console.log("Backend response:", data);
 
+            if (!response.ok) {
+                throw new Error(
+                    data.error || "Failed to submit appointment."
+                );
+            }
 
-function scrollToAppointment() {
-    document.getElementById("appointment")
-        .scrollIntoView({
-            behavior: "smooth"
+            // Support different backend response field names
+            const queueNumber =
+                data.appointment_id ||
+                data.queue_number ||
+                data.id ||
+                "—";
+
+            // Update confirmation details
+            if (summaryPatient) {
+                summaryPatient.textContent =
+                    data.patient_name || patientName;
+            }
+
+            if (summaryDepartment) {
+                summaryDepartment.textContent =
+                    data.department || department;
+            }
+
+            if (summaryPhone) {
+                summaryPhone.textContent =
+                    data.phone || phone;
+            }
+
+            if (summaryQueue) {
+                summaryQueue.textContent = queueNumber;
+            }
+
+            if (liveQueueNumber) {
+                liveQueueNumber.textContent = queueNumber;
+            }
+
+            // Display confirmation modal
+            if (modal) {
+                modal.style.display = "flex";
+                modal.classList.add("active");
+            }
+
+            form.reset();
+
+        } catch (error) {
+            console.error("Appointment error:", error);
+            alert(error.message || "Something went wrong.");
+
+        } finally {
+            if (submitButton) {
+                submitButton.disabled = false;
+                submitButton.textContent = "Book Appointment";
+            }
+        }
+    });
+
+    // Close modal using close icon
+    if (closeModal) {
+        closeModal.addEventListener("click", () => {
+            modal.style.display = "none";
+            modal.classList.remove("active");
         });
-}
-
-
-// Close modal when clicking outside the popup
-window.addEventListener("click", function (event) {
-    const modal = document.getElementById("successModal");
-
-    if (event.target === modal) {
-        closeModal();
     }
+
+    // Close modal using Done button
+    if (doneButton) {
+        doneButton.addEventListener("click", () => {
+            modal.style.display = "none";
+            modal.classList.remove("active");
+        });
+    }
+
+    // Close modal by clicking outside
+    window.addEventListener("click", (event) => {
+        if (event.target === modal) {
+            modal.style.display = "none";
+            modal.classList.remove("active");
+        }
+    });
 });
