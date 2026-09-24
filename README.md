@@ -138,6 +138,3 @@ This project demonstrates:
 -   Health checks
 -   Application and database verification
 
-## Author
-
-Add your preferred public profile or repository link here.
