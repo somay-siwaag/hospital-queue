@@ -75,6 +75,30 @@ Cloud SQL for PostgreSQL
 8.  The backend stores the appointment in Cloud SQL PostgreSQL.
 9.  A success response is returned to the frontend.
 
+## Application Screenshots
+
+### 1. CareQueue Homepage
+
+![CareQueue Homepage](homepage.png)
+
+---
+
+### 2. Hospital Services
+
+![CareQueue Services](services.png)
+
+---
+
+### 3. Appointment Booking
+
+![Appointment Booking](appointment-booking.png)
+
+---
+
+### 4. Appointment Confirmation
+
+![Appointment Confirmation](appointment-confirmation.png)
+
 ## API Endpoints
 
   Method   Endpoint              Purpose
