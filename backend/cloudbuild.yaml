@@ -1,0 +1,24 @@
+
+steps:
+  # Build the CareQueue backend Docker image
+  - name: 'gcr.io/cloud-builders/docker'
+    id: 'Build backend image'
+    args:
+      - 'build'
+      - '-t'
+      - '${_REGION}-docker.pkg.dev/$PROJECT_ID/${_REPOSITORY}/carequeue-backend:$SHORT_SHA'
+      - './backend'
+
+  # Push the image to Artifact Registry
+  - name: 'gcr.io/cloud-builders/docker'
+    id: 'Push backend image'
+    args:
+      - 'push'
+      - '${_REGION}-docker.pkg.dev/$PROJECT_ID/${_REPOSITORY}/carequeue-backend:$SHORT_SHA'
+
+images:
+  - '${_REGION}-docker.pkg.dev/$PROJECT_ID/${_REPOSITORY}/carequeue-backend:$SHORT_SHA'
+
+substitutions:
+  _REGION: 'asia-south2'
+  _REPOSITORY: 'carequeue-images'
