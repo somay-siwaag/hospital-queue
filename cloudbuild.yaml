@@ -17,10 +17,13 @@ steps:
 images:
   - '${_REGION}-docker.pkg.dev/$PROJECT_ID/${_REPOSITORY}/carequeue-backend:$SHORT_SHA'
 
+options:
+  logging: CLOUD_LOGGING_ONLY
+
 substitutions:
   _REGION: 'asia-south2'
   _REPOSITORY: 'carequeue-images'
-  _IMAGE_TAG: 'manual'
+
 
 
 
