@@ -1,0 +1,26 @@
+
+steps:
+  - name: 'gcr.io/cloud-builders/docker'
+    id: 'Build backend image'
+    args:
+      - 'build'
+      - '-t'
+      - '${_REGION}-docker.pkg.dev/$PROJECT_ID/${_REPOSITORY}/carequeue-backend:$SHORT_SHA'
+      - './backend'
+
+  - name: 'gcr.io/cloud-builders/docker'
+    id: 'Push backend image'
+    args:
+      - 'push'
+      - '${_REGION}-docker.pkg.dev/$PROJECT_ID/${_REPOSITORY}/carequeue-backend:$SHORT_SHA'
+
+images:
+  - '${_REGION}-docker.pkg.dev/$PROJECT_ID/${_REPOSITORY}/carequeue-backend:$SHORT_SHA'
+
+substitutions:
+  _REGION: 'asia-south2'
+  _REPOSITORY: 'carequeue-images'
+  _IMAGE_TAG: 'manual'
+
+
+
